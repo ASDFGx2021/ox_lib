@@ -304,43 +304,77 @@ function lib.disableRadial(state)
     end
 end
 
-lib.addKeybind({
-    name = 'ox_lib-radial',
-    description = locale('open_radial_menu'),
-    defaultKey = 'z',
-    onPressed = function()
-        if isDisabled then return end
+AddEventHandler("ox_lib:openRadial", function()
+    if isDisabled then return end
 
-        if isOpen then
-            return lib.hideRadial()
-        end
+    if isOpen then
+        return lib.hideRadial()
+    end
 
-        if #menuItems == 0 or IsNuiFocused() or IsPauseMenuActive() then return end
+    if #menuItems == 0 or IsNuiFocused() or IsPauseMenuActive() then return end
 
-        isOpen = true
+    isOpen = true
 
-        SendNUIMessage({
-            action = 'openRadialMenu',
-            data = {
-                items = menuItems
-            }
-        })
+    print('menuItems:', json.encode(menuItems))
 
-        lib.setNuiFocus(true)
-        SetCursorLocation(0.5, 0.5)
 
-        while isOpen do
-            DisablePlayerFiring(cache.playerId, true)
-            DisableControlAction(0, 1, true)
-            DisableControlAction(0, 2, true)
-            DisableControlAction(0, 142, true)
-            DisableControlAction(2, 199, true)
-            DisableControlAction(2, 200, true)
-            Wait(0)
-        end
-    end,
-    -- onReleased = lib.hideRadial,
-})
+    SendNUIMessage({
+        action = 'openRadialMenu',
+        data = {
+            items = menuItems
+        }
+    })
+
+    lib.setNuiFocus(true)
+    SetCursorLocation(0.5, 0.5)
+
+    while isOpen do
+        DisablePlayerFiring(cache.playerId, true)
+        DisableControlAction(0, 1, true)
+        DisableControlAction(0, 2, true)
+        DisableControlAction(2, 199, true)
+        DisableControlAction(2, 200, true)
+        Wait(0)
+    end
+end)
+
+-- lib.addKeybind({
+--     name = 'ox_lib-radial',
+--     description = locale('open_radial_menu'),
+--     defaultKey = 'z',
+--     onPressed = function()
+--         if isDisabled then return end
+
+--         if isOpen then
+--             return lib.hideRadial()
+--         end
+
+--         if #menuItems == 0 or IsNuiFocused() or IsPauseMenuActive() then return end
+
+--         isOpen = true
+
+--         SendNUIMessage({
+--             action = 'openRadialMenu',
+--             data = {
+--                 items = menuItems
+--             }
+--         })
+
+--         lib.setNuiFocus(true)
+--         SetCursorLocation(0.5, 0.5)
+
+--         while isOpen do
+--             DisablePlayerFiring(cache.playerId, true)
+--             DisableControlAction(0, 1, true)
+--             DisableControlAction(0, 2, true)
+--             DisableControlAction(0, 142, true)
+--             DisableControlAction(2, 199, true)
+--             DisableControlAction(2, 200, true)
+--             Wait(0)
+--         end
+--     end,
+--     -- onReleased = lib.hideRadial,
+-- })
 
 AddEventHandler('onClientResourceStop', function(resource)
     for i = #menuItems, 1, -1 do

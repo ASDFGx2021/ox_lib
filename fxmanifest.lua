@@ -31,6 +31,7 @@ files {
 shared_script 'resource/init.lua'
 
 shared_scripts {
+    '@es_extended/imports.lua',
     'resource/**/shared.lua',
     -- 'resource/**/shared/*.lua'
 }

@@ -29,7 +29,11 @@ local GetCurrentPedWeapon = GetCurrentPedWeapon
 CreateThread(function()
 	while true do
 		local ped = PlayerPedId()
+		
+		local coords = GetEntityCoords(ped)
+
 		cache:set('ped', ped)
+		cache:set('coords', coords)
 
 		local vehicle = GetVehiclePedIsIn(ped, false)
 

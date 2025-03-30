@@ -35,10 +35,20 @@ function lib.notify(data)
     data.sound = nil
     data.position = data.position or settings.notification_position
 
-    SendNUIMessage({
-        action = 'notify',
-        data = data
-    })
+    if data.title == nil then
+        data.title = ''
+    end
+
+    if data.description == nil then
+        data.description = ''
+    end
+
+    ESX.ShowNotification(data.title.. ' '.. data.description)
+
+    -- SendNUIMessage({
+    --     action = 'notify',
+    --     data = data
+    -- })
 
     if not sound then return end
 
